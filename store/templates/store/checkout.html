@@ -5,6 +5,7 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
+            {% comment %} {% csrf_token %} {% endcomment %}
             <form id="form">
                 <div id="user-info">
                     <div class="form-field">
@@ -44,7 +45,8 @@
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>Paypal Options</small>
-            <button id="make-payment"> Make Payment </button>
+            {% comment %} <button id="make-payment"> Make Payment </button> {% endcomment %}
+            <div id="paypal-button-container"></div>
         </div>
         
     </div>
@@ -68,6 +70,16 @@
         </div>
     </div>
 </div>
+<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+
+<script>
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons({
+        style: {
+            layout: 'horizontal'
+        }
+    }).render('#paypal-button-container');
+</script>
 
 <script type="text/javascript">
     var shipping = '{{order.shipping}}'
@@ -79,7 +91,8 @@
         document.getElementById('shipping-info').innerHTML = '';
     }
 
-    var form = document.getElementById('form')
+    {% comment %} var form = document.getElementById('form'); 
+    var csrftoken = document.getElementByTagName("input")[0].value {% endcomment %}
 
     form.addEventListener('submit', function(e){
         e.preventDefault()
@@ -89,9 +102,10 @@
     })
 
 
-    document.getElementById('make-payment').addEventListener('click', function(e){
+    {% comment %} document.getElementById('make-payment').addEventListener('click', function(e){
         submitFormData()
-    })
+    }) {% endcomment %}
+
     function submitFormData(){
         console.log("Clicked");
         var userFormData = {
@@ -139,7 +153,7 @@
         
     }
 </script>  
-{% endblock content%}
+{% endblock content %}
 
   
 
